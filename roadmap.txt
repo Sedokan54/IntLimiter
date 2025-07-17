@@ -1,0 +1,210 @@
+# NetLimiter Clone - Claude Code Terminal Komutları
+
+## PROJE KURULUM KOMUTLARI
+
+### 1. Başlangıç - Proje Oluşturma
+```
+claude-code "Create a new WPF application called NetLimiterClone with .NET 7, set up the basic project structure with folders for Models, ViewModels, Views, Services, and Helpers. Add necessary NuGet packages for network monitoring: OxyPlot.Wpf, Microsoft.Diagnostics.Tracing.TraceEvent, System.Management"
+```
+
+### 2. Temel Model Sınıfları
+```
+claude-code "Create ProcessInfo model class with properties: ProcessId, ProcessName, ProcessPath, IconPath, DownloadSpeed, UploadSpeed, TotalDownload, TotalUpload, ConnectionCount, IsSystemProcess. Add NetworkStats model with Timestamp, BytesSent, BytesReceived. Add BandwidthRule model with ProcessId, DownloadLimit, UploadLimit, IsEnabled, Priority"
+```
+
+### 3. Ana Pencere UI Tasarımı
+```
+claude-code "Create MainWindow.xaml with NetLimiter-style layout: Menu bar at top, toolbar below it, main DataGrid in center showing process list with columns for Process Name, Download Speed, Upload Speed, Download Limit, Upload Limit. Add status bar at bottom. Use modern flat design with icons"
+```
+
+### 4. Process Monitoring Service - Basit Versiyon
+```
+claude-code "Create NetworkMonitorService class that uses Performance Counters and WMI to get list of running processes and their network usage. Update process list every second. Use NetStat to map network connections to processes. Return observable collection of ProcessInfo objects"
+```
+
+### 5. ViewModel Implementation
+```
+claude-code "Create MainViewModel with ObservableCollection of ProcessViewModel objects. Implement INotifyPropertyChanged. Add commands for RefreshProcessList, SetBandwidthLimit, ToggleLimit. Add real-time update logic using DispatcherTimer. Sort processes by network usage"
+```
+
+### 6. Gerçek Zamanlı Grafik
+```
+claude-code "Add real-time bandwidth chart using OxyPlot to MainWindow. Show last 60 seconds of total upload/download speeds. Update every second. Add separate line series for upload (green) and download (red). Make it look like NetLimiter's graph"
+```
+
+### 7. System Tray Entegrasyonu
+```
+claude-code "Add system tray icon support with context menu. Options: Show/Hide main window, Exit, Quick stats tooltip showing current speeds. Use NotifyIcon from Windows Forms. Add minimize to tray functionality"
+```
+
+### 8. Process İkon ve Detayları
+```
+claude-code "Add ProcessHelper class to extract process icons and convert to WPF ImageSource. Get process details like company name, description, file version. Handle access denied exceptions gracefully. Cache icons for performance"
+```
+
+### 9. Sağ Tık Context Menu
+```
+claude-code "Add context menu to process DataGrid with options: Set Download Limit, Set Upload Limit, Remove Limits, Block Process, View Process Details, Open File Location. Implement each menu action"
+```
+
+### 10. ETW Tabanlı Monitoring
+```
+claude-code "Replace basic monitoring with ETW-based NetworkMonitorService. Use Microsoft.Diagnostics.Tracing.TraceEvent to capture kernel network events. Map events to processes. Calculate accurate per-process bandwidth. Handle admin privileges requirement"
+```
+
+### 11. Traffic Control API - Basit Limiting
+```
+claude-code "Create BandwidthLimiter service using Windows Traffic Control API. Implement SetProcessLimit method that applies QoS rules. Handle the 80% bandwidth limitation. Add error handling for non-admin scenarios"
+```
+
+### 12. Settings Penceresi
+```
+claude-code "Create SettingsWindow with tabs: General (update interval, start with Windows), Appearance (theme selection, colors), Network (adapter selection), Advanced (ETW options). Save settings to AppSettings.json"
+```
+
+### 13. Process Filtreleme ve Arama
+```
+claude-code "Add search box and filter options to MainWindow toolbar. Filter by: process name, network activity (active/inactive), system/user processes. Add quick filters buttons. Implement live filtering on the ObservableCollection"
+```
+
+### 14. WFP User-Mode Implementation
+```
+claude-code "Create WFPService class for Windows Filtering Platform integration. Implement methods: InitializeWFP, AddProcessFilter, RemoveProcessFilter, SetBandwidthLimit using token bucket algorithm. Handle WFP sessions and cleanup"
+```
+
+### 15. Veritabanı Entegrasyonu
+```
+claude-code "Add SQLite database support using Entity Framework Core. Create tables for: ProcessHistory, NetworkStats, BandwidthRules, DailyUsage. Implement DatabaseService with methods for saving stats and loading history"
+```
+
+### 16. Bandwidth Limiter UI
+```
+claude-code "Create BandwidthLimitDialog window for setting limits. Add sliders for download/upload limits with KB/s, MB/s units. Add preset buttons (1 Mbps, 5 Mbps, 10 Mbps). Show current usage vs limit visually"
+```
+
+### 17. Günlük/Aylık İstatistikler
+```
+claude-code "Create StatisticsWindow showing daily and monthly bandwidth usage per process. Use bar charts for top 10 processes. Add date range selector. Export to CSV functionality. Show totals and averages"
+```
+
+### 18. Profil Sistemi
+```
+claude-code "Implement profile system where users can save different sets of bandwidth rules. Add ProfileManager service. Create profile selector in toolbar. Profiles: Gaming, Work, Streaming, Unlimited. Quick switch functionality"
+```
+
+### 19. Bildirim Sistemi
+```
+claude-code "Add Windows toast notifications for: bandwidth limit reached, new process detected, high network usage alert. Use Windows.UI.Notifications. Make notifications clickable to open main window"
+```
+
+### 20. Auto-Updater
+```
+claude-code "Implement auto-update functionality. Check for updates on GitHub releases. Download and install updates in background. Show update notification. Add manual check for updates in Help menu"
+```
+
+### 21. Gelişmiş Process Gruplandırma
+```
+claude-code "Add process grouping feature like NetLimiter. Group by: application (all Chrome processes), service type, user. Show grouped view in TreeView. Apply limits to entire groups"
+```
+
+### 22. Bağlantı Detayları Penceresi
+```
+claude-code "Create ConnectionDetailsWindow showing all TCP/UDP connections for selected process. Show local/remote addresses, ports, connection state, bytes transferred. Add ability to close connections"
+```
+
+### 23. Kota Sistemi
+```
+claude-code "Implement quota system with daily/monthly limits per process. When quota reached, block or limit severely. Show quota usage in main grid. Reset quotas automatically. Warning notifications at 80% usage"
+```
+
+### 24. Dark Mode Theme
+```
+claude-code "Implement dark mode theme for entire application. Create ThemeManager service. Use resource dictionaries for colors. Add smooth transition animation when switching themes. Save theme preference"
+```
+
+### 25. Performance Optimizasyonu
+```
+claude-code "Optimize application performance: virtualize DataGrid for large process lists, implement lazy loading, use object pooling for ProcessInfo objects, optimize UI updates to max 10 FPS, add performance profiling mode"
+```
+
+### 26. Firewall Entegrasyonu
+```
+claude-code "Add basic firewall functionality to block processes completely. Use Windows Firewall API to create inbound/outbound rules. Add firewall status column to main grid. Quick block/unblock buttons"
+```
+
+### 27. Grafik Dışa Aktarma
+```
+claude-code "Add ability to export bandwidth graphs as PNG images. Export current view or custom time range. Add watermark with timestamp. Include statistics on the image"
+```
+
+### 28. Komut Satırı Desteği
+```
+claude-code "Add command line interface for NetLimiterClone. Commands: --list-processes, --set-limit [pid] [download] [upload], --remove-limit [pid], --start-minimized. Return JSON output for scripting"
+```
+
+### 29. Import/Export Ayarları
+```
+claude-code "Add import/export functionality for all settings, rules, and profiles. Use JSON format. Include validation. Add backup/restore feature with automatic daily backups"
+```
+
+### 30. Final Polish ve Installer
+```
+claude-code "Create WiX installer for NetLimiterClone. Add start menu shortcuts, desktop icon option, Windows startup option. Include all dependencies. Create uninstaller that cleanly removes WFP filters"
+```
+
+## HATA ÇÖZÜM KOMUTLARI
+
+### Admin Yetkisi Sorunu
+```
+claude-code "Add UAC manifest to require administrator privileges. Show friendly error message if not running as admin. Add 'Restart as Administrator' button"
+```
+
+### ETW Session Hatası
+```
+claude-code "Fix ETW session already exists error. Check for existing sessions and close them. Add session cleanup on application exit. Handle access denied exceptions"
+```
+
+### WFP Cleanup
+```
+claude-code "Implement proper WFP cleanup on application crash or exit. Create cleanup utility that removes orphaned filters. Add WFP status check on startup"
+```
+
+## TEST KOMUTLARI
+
+### Unit Test Oluşturma
+```
+claude-code "Create unit tests for NetworkMonitorService, BandwidthLimiter, and DatabaseService using xUnit. Mock external dependencies. Test edge cases and error scenarios"
+```
+
+### UI Test Oluşturma
+```
+claude-code "Create UI automation tests for main scenarios: adding limits, viewing stats, changing settings. Use WPF UI Automation. Test theme switching and window states"
+```
+
+## KULLANIM ÖRNEKLERİ
+
+Her komutu sırayla çalıştırın:
+1. Önce proje kurulumunu yapın (komut 1)
+2. Model sınıflarını oluşturun (komut 2)
+3. UI'ı tasarlayın (komut 3)
+4. Service'leri ekleyin (komut 4-5)
+5. Her komuttan sonra projeyi test edin
+
+## İPUÇLARI
+
+- Her büyük değişiklikten önce git commit yapın
+- Komutları parça parça çalıştırın, hepsini aynı anda değil
+- Hata alırsanız, hata mesajını Claude Code'a verin
+- UI değişikliklerini hemen görmek için uygulamayı çalıştırın
+
+## ÖRNEK TERMINAL KULLANIMI
+
+```bash
+cd C:\Projects
+claude-code "Create a new WPF application..."
+cd NetLimiterClone
+dotnet build
+dotnet run
+```
+
+Her komuttan sonra sonucu kontrol edin ve bir sonraki adıma geçin.
