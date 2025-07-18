@@ -47,7 +47,7 @@ namespace NetLimiterClone.Services
 
             var showItem = new ToolStripMenuItem("Show Main Window");
             showItem.Click += (sender, e) => ShowMainWindowRequested?.Invoke(this, EventArgs.Empty);
-            showItem.Font = new Font(showItem.Font, FontStyle.Bold);
+            showItem.Font = new Font(showItem.Font, System.Drawing.FontStyle.Bold);
 
             var hideItem = new ToolStripMenuItem("Hide to Tray");
             hideItem.Click += (sender, e) => HideMainWindowRequested?.Invoke(this, EventArgs.Empty);
@@ -98,7 +98,7 @@ namespace NetLimiterClone.Services
                 
                 graphics.Clear(Color.Transparent);
                 graphics.FillEllipse(Brushes.Blue, 2, 2, 12, 12);
-                graphics.DrawString("N", new Font("Arial", 8, FontStyle.Bold), Brushes.White, new PointF(5, 2));
+                graphics.DrawString("N", new Font(new FontFamily("Arial"), 8, System.Drawing.FontStyle.Bold), Brushes.White, new PointF(5, 2));
 
                 var hIcon = bitmap.GetHicon();
                 return Icon.FromHandle(hIcon);
@@ -171,7 +171,7 @@ namespace NetLimiterClone.Services
                 
                 var color = hasActivity ? Color.Green : Color.Blue;
                 graphics.FillEllipse(new SolidBrush(color), 2, 2, 12, 12);
-                graphics.DrawString("N", new Font("Arial", 8, FontStyle.Bold), Brushes.White, new PointF(5, 2));
+                graphics.DrawString("N", new Font(new FontFamily("Arial"), 8, System.Drawing.FontStyle.Bold), Brushes.White, new PointF(5, 2));
 
                 var oldIcon = _notifyIcon.Icon;
                 var hIcon = bitmap.GetHicon();
@@ -205,11 +205,4 @@ namespace NetLimiterClone.Services
         }
     }
 
-    public enum NotificationType
-    {
-        Info,
-        Warning,
-        Error,
-        Success
-    }
 }

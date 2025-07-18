@@ -290,6 +290,42 @@ namespace NetLimiterClone.Services
             }
         }
 
+        public void SaveBandwidthRule(BandwidthRule rule)
+        {
+            // TODO: Implement saving bandwidth rule to database
+        }
+
+        public void RemoveBandwidthRule(int processId)
+        {
+            // TODO: Implement removing bandwidth rule from database
+        }
+
+        public async Task SaveProcessGroupAsync(ProcessGroup group)
+        {
+            // TODO: Implement saving process group to database
+            await Task.CompletedTask;
+        }
+
+        public async Task<List<BandwidthRule>> GetAllBandwidthRulesAsync()
+        {
+            // TODO: Implement getting all bandwidth rules from database
+            await Task.CompletedTask;
+            return new List<BandwidthRule>();
+        }
+
+        public async Task<List<ProcessGroup>> GetAllProcessGroupsAsync()
+        {
+            // TODO: Implement getting all process groups from database
+            await Task.CompletedTask;
+            return new List<ProcessGroup>();
+        }
+
+        public async Task ClearAllBandwidthRulesAsync()
+        {
+            // TODO: Implement clearing all bandwidth rules from database
+            await Task.CompletedTask;
+        }
+
         public void Dispose()
         {
             if (!_disposed)

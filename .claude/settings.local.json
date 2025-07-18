@@ -2,7 +2,15 @@
   "permissions": {
     "allow": [
       "Bash(dotnet new:*)",
-      "Bash(mkdir:*)"
+      "Bash(mkdir:*)",
+      "Bash(dotnet build:*)",
+      "Bash(ls:*)",
+      "Bash(find:*)",
+      "Bash(\"/mnt/c/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/MSBuild.exe\" NetLimiterClone.csproj -p:Configuration=Release)",
+      "Bash(\"/mnt/c/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/MSBuild.exe\" NetLimiterClone.csproj -t:Clean)",
+      "Bash(\"/mnt/c/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/MSBuild.exe\" NetLimiterClone.csproj -t:Restore)",
+      "Bash(\"/mnt/c/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/MSBuild.exe\" NetLimiterClone.csproj -p:Configuration=Release --verbosity:minimal)",
+      "Bash(grep:*)"
     ],
     "deny": []
   }

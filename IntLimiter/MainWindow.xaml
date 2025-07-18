@@ -127,7 +127,13 @@
                       CanUserDeleteRows="False"
                       AutoGenerateColumns="False"
                       SelectionMode="Single"
-                      SelectionUnit="FullRow">
+                      SelectionUnit="FullRow"
+                      EnableRowVirtualization="True"
+                      EnableColumnVirtualization="True"
+                      VirtualizingPanel.VirtualizationMode="Recycling"
+                      VirtualizingPanel.IsVirtualizing="True"
+                      VirtualizingPanel.IsContainerVirtualizable="True"
+                      ScrollViewer.CanContentScroll="True">
                 
                 <DataGrid.Columns>
                     <DataGridTemplateColumn Header="Process" Width="200">

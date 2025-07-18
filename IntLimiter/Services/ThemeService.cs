@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
 using System.Windows;
@@ -153,6 +154,17 @@ namespace NetLimiterClone.Services
         public ThemeMode[] GetAvailableThemes()
         {
             return Enum.GetValues<ThemeMode>();
+        }
+
+        public void SetTheme(NetLimiterClone.Models.ThemeMode themeMode)
+        {
+            var newTheme = themeMode switch
+            {
+                NetLimiterClone.Models.ThemeMode.Dark => ThemeMode.Dark,
+                NetLimiterClone.Models.ThemeMode.Light => ThemeMode.Light,
+                _ => ThemeMode.Light
+            };
+            CurrentTheme = newTheme;
         }
     }
 

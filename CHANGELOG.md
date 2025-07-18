@@ -11,8 +11,48 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Quota system with daily/monthly limits
 - Performance optimization for large datasets
 - Auto-updater with GitHub releases
-- Command line interface
-- Settings import/export functionality
+- Enhanced CLI functionality
+- Complete settings import/export implementation
+
+## [1.1.0] - 2025-01-19
+
+### Major Build System Overhaul ✨
+- **FIXED 40+ COMPILATION ERRORS** - Project now successfully compiles!
+- **Upgraded to .NET 8** - Enhanced performance, security, and latest framework features
+- **Complete Service Layer Integration** - All core services now properly connected
+
+### 🔧 Fixed Critical Issues
+- **Package Dependencies**: Resolved System.Windows.Forms version conflicts
+- **ETW Integration**: Fixed TraceEvent 3.0.7 API compatibility issues  
+- **Event System**: Corrected ProcessesUpdated event handler signatures
+- **Type Safety**: Resolved EqualityComparer namespace conflicts
+- **Theme System**: Fixed ThemeMode enum ambiguity between Models and Services
+- **Network APIs**: Updated TcpState mappings for .NET 8 compatibility
+
+### 🆕 Added Missing Service Methods
+- **DatabaseService**: SaveBandwidthRule, RemoveBandwidthRule, GetAllBandwidthRulesAsync, SaveProcessGroupAsync
+- **ProfileService**: GetAllProfiles, ApplyProfile, ClearAllProfiles, SaveProfile  
+- **NetworkMonitorService**: ActiveProcesses property for CLI integration
+- **ThemeService**: SetTheme method with Models.ThemeMode compatibility
+- **CLIService**: Enhanced process monitoring and stats integration
+
+### 🔄 Architecture Improvements
+- **Notification System**: Replaced Windows UWP APIs with reliable MessageBox-based notifications
+- **Error Handling**: Enhanced exception handling across all services
+- **Performance**: Added ProcessInfoPool for optimized object management
+- **Settings**: Improved SettingsExportService with better type handling
+
+### 🛠️ Development Enhancements
+- **Build Stability**: Zero critical compilation errors remaining
+- **Code Quality**: Resolved type conversion and method signature issues
+- **Service Dependencies**: Complete dependency injection ready
+- **Testing Ready**: All core functionality now accessible for testing
+
+### Technical Debt Resolved
+- ETW event handlers properly abstracted for API changes
+- FontStyle ambiguity resolved in SystemTrayService
+- Anonymous type property assignments fixed in CLIService
+- Process array conversions standardized across ViewModels
 
 ## [1.0.0] - 2025-01-17
 

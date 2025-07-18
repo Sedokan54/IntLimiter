@@ -207,6 +207,34 @@
                             </StackPanel>
                         </GroupBox>
 
+                        <GroupBox Header="Import/Export" Foreground="White" BorderBrush="#FF555555" Margin="0,0,0,20">
+                            <StackPanel Margin="10">
+                                <Button Content="Export Settings" 
+                                        Command="{Binding ExportSettingsCommand}" 
+                                        Style="{StaticResource ModernButton}" 
+                                        Margin="0,5" 
+                                        HorizontalAlignment="Left"
+                                        ToolTip="Export all settings, profiles, and rules to a JSON file"/>
+                                <Button Content="Import Settings" 
+                                        Command="{Binding ImportSettingsCommand}" 
+                                        Style="{StaticResource ModernButton}" 
+                                        Margin="0,5" 
+                                        HorizontalAlignment="Left"
+                                        ToolTip="Import settings from a JSON file"/>
+                                <Button Content="Create Backup" 
+                                        Command="{Binding CreateBackupCommand}" 
+                                        Style="{StaticResource ModernButton}" 
+                                        Margin="0,5" 
+                                        HorizontalAlignment="Left"
+                                        ToolTip="Create an automatic backup of current settings"/>
+                                <Button Content="Restore Backup" 
+                                        Command="{Binding RestoreBackupCommand}" 
+                                        Style="{StaticResource ModernButton}" 
+                                        Margin="0,5" 
+                                        HorizontalAlignment="Left"
+                                        ToolTip="Restore settings from a backup file"/>
+                            </StackPanel>
+                        </GroupBox>
                         <GroupBox Header="Database" Foreground="White" BorderBrush="#FF555555">
                             <Grid Margin="10">
                                 <Grid.RowDefinitions>

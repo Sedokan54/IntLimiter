@@ -20,6 +20,8 @@ namespace NetLimiterClone.Services
         public event EventHandler<ProcessInfo[]>? ProcessesUpdated;
         public event EventHandler<NetworkStats>? NetworkStatsUpdated;
 
+        public ProcessInfo[] ActiveProcesses => _processCache.Values.ToArray();
+
         public NetworkMonitorService()
         {
             _updateTimer = new Timer(UpdateNetworkStats, null, TimeSpan.Zero, TimeSpan.FromSeconds(1));

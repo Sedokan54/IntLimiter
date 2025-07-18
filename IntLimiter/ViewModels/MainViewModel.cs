@@ -1,8 +1,10 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
 using NetLimiterClone.Models;
@@ -221,13 +223,13 @@ namespace NetLimiterClone.ViewModels
             // Setup event handlers
             if (_etwNetworkMonitorService != null)
             {
-                _etwNetworkMonitorService.ProcessesUpdated += OnProcessesUpdated;
+                _etwNetworkMonitorService.ProcessesUpdated += (sender, processes) => OnProcessesUpdated(processes);
                 _etwNetworkMonitorService.NetworkStatsUpdated += OnNetworkStatsUpdated;
                 _etwNetworkMonitorService.StartMonitoring();
             }
             else
             {
-                _networkMonitorService.ProcessesUpdated += OnProcessesUpdated;
+                _networkMonitorService.ProcessesUpdated += (sender, processes) => OnProcessesUpdated(processes);
                 _networkMonitorService.NetworkStatsUpdated += OnNetworkStatsUpdated;
             }
             _systemTrayService.ShowMainWindowRequested += OnShowMainWindowRequested;
@@ -250,7 +252,7 @@ namespace NetLimiterClone.ViewModels
             // Setup UI update timer
             _uiUpdateTimer = new DispatcherTimer
             {
-                Interval = TimeSpan.FromMilliseconds(_settingsService.CurrentSettings.UpdateInterval)
+                Interval = TimeSpan.FromMilliseconds(Math.Max(100, _settingsService.CurrentSettings.UpdateInterval)) // Min 10 FPS
             };
             _uiUpdateTimer.Tick += OnUiUpdateTimer;
             _uiUpdateTimer.Start();
@@ -262,7 +264,7 @@ namespace NetLimiterClone.ViewModels
             StatusText = "Monitoring network activity...";
         }
 
-        private void OnProcessesUpdated(object? sender, ProcessInfo[] processes)
+        private void OnProcessesUpdated(ProcessInfo[] processes)
         {
             App.Current.Dispatcher.Invoke(() =>
             {
@@ -645,17 +647,9 @@ namespace NetLimiterClone.ViewModels
 
         private void Profiles(object? parameter)
         {
-            try
-            {
-                var viewModel = new ProfilesViewModel(_profileService);
-                var window = new Views.ProfilesWindow(viewModel);
-                window.Show();
-                StatusText = "Profiles window opened";
-            }
-            catch (Exception ex)
-            {
-                StatusText = $"Error opening profiles: {ex.Message}";
-            }
+            // TODO: Implement ProfilesWindow and ProfilesViewModel
+            MessageBox.Show("Profiles window not yet implemented.", "Not Implemented", MessageBoxButton.OK, MessageBoxImage.Information);
+            StatusText = "Profiles window not implemented";
         }
 
         private void OnProfileChanged(object? sender, ProfileChangedEventArgs e)
@@ -708,8 +702,8 @@ namespace NetLimiterClone.ViewModels
             {
                 _notificationService.ShowBandwidthLimitNotification(
                     e.Rule.ProcessName, 
-                    e.Rule.DownloadLimit, 
-                    e.Rule.UploadLimit);
+                    "Bandwidth", 
+                    $"{e.Rule.DownloadLimit / 1024} KB/s");
             }
         }
 
@@ -777,8 +771,8 @@ namespace NetLimiterClone.ViewModels
 
         private void ApplySettings(AppSettings settings)
         {
-            // Update UI update timer interval
-            _uiUpdateTimer.Interval = TimeSpan.FromMilliseconds(settings.UpdateInterval);
+            // Update UI update timer interval with minimum 10 FPS limit
+            _uiUpdateTimer.Interval = TimeSpan.FromMilliseconds(Math.Max(100, settings.UpdateInterval));
 
             // Update filter settings
             ShowSystemProcesses = settings.ShowSystemProcesses;

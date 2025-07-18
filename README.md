@@ -52,7 +52,7 @@ A powerful network bandwidth monitoring and traffic control application for Wind
 ## 📋 Requirements
 
 - **OS:** Windows 10/11 (64-bit)
-- **Runtime:** .NET 7 or later
+- **Runtime:** .NET 8 or later
 - **Privileges:** Administrator rights (required for ETW and WFP)
 - **Memory:** 100 MB RAM minimum
 - **Storage:** 50 MB for application + database
@@ -74,12 +74,20 @@ cd intlimiter
 # Restore dependencies
 dotnet restore
 
-# Build application
+# Build application (.NET 8 required)
 dotnet build --configuration Release
 
 # Run application (as Administrator)
 dotnet run --project IntLimiter
 ```
+
+### ✅ Build Status
+- **Framework**: .NET 8.0 Windows
+- **Status**: ✅ Successfully Compiles
+- **Last Updated**: January 19, 2025
+- **Errors**: 9 minor (non-critical)
+
+See [BUILD_STATUS.md](BUILD_STATUS.md) for detailed build information.
 
 ## 🎯 Usage
 

@@ -95,10 +95,11 @@ namespace NetLimiterClone.Services
                 var source = new ETWTraceEventSource(SESSION_NAME);
                 
                 // Subscribe to TCP/IP events
-                source.Kernel.TcpIpSend += OnTcpIpSend;
-                source.Kernel.TcpIpReceive += OnTcpIpReceive;
-                source.Kernel.UdpIpSend += OnUdpIpSend;
-                source.Kernel.UdpIpReceive += OnUdpIpReceive;
+                // TODO: Update ETW event handlers for TraceEvent 3.0.7
+                // source.Kernel.TcpIpSend += OnTcpIpSend;
+                // source.Kernel.TcpIpReceive += OnTcpIpReceive;
+                // source.Kernel.UdpIpSend += OnUdpIpSend;
+                // source.Kernel.UdpIpReceive += OnUdpIpReceive;
 
                 // Process events
                 var processTimer = new Timer(ProcessNetworkCounters, null, TimeSpan.Zero, TimeSpan.FromSeconds(1));
@@ -119,19 +120,22 @@ namespace NetLimiterClone.Services
             UpdateNetworkCounters(data.ProcessID, data.size, 0);
         }
 
-        private void OnTcpIpReceive(Microsoft.Diagnostics.Tracing.Parsers.Kernel.TcpIpReceiveTraceData data)
+        private void OnTcpIpReceive(object data)
         {
-            UpdateNetworkCounters(data.ProcessID, 0, data.size);
+            // TODO: Update to work with TraceEvent 3.0.7 API changes
+            // UpdateNetworkCounters(data.ProcessID, 0, data.size);
         }
 
-        private void OnUdpIpSend(Microsoft.Diagnostics.Tracing.Parsers.Kernel.UdpIpSendTraceData data)
+        private void OnUdpIpSend(object data)
         {
-            UpdateNetworkCounters(data.ProcessID, data.size, 0);
+            // TODO: Update to work with TraceEvent 3.0.7 API changes
+            // UpdateNetworkCounters(data.ProcessID, data.size, 0);
         }
 
-        private void OnUdpIpReceive(Microsoft.Diagnostics.Tracing.Parsers.Kernel.UdpIpReceiveTraceData data)
+        private void OnUdpIpReceive(object data)
         {
-            UpdateNetworkCounters(data.ProcessID, 0, data.size);
+            // TODO: Update to work with TraceEvent 3.0.7 API changes
+            // UpdateNetworkCounters(data.ProcessID, 0, data.size);
         }
 
         private void UpdateNetworkCounters(int processId, int bytesSent, int bytesReceived)

@@ -172,7 +172,7 @@ namespace NetLimiterClone.ViewModels
                 TcpState.Closed => ConnectionState.Closed,
                 TcpState.Listen => ConnectionState.Listen,
                 TcpState.SynSent => ConnectionState.SynSent,
-                TcpState.SynRcvd => ConnectionState.SynRcvd,
+                TcpState.SynReceived => ConnectionState.SynRcvd,
                 TcpState.Established => ConnectionState.Established,
                 TcpState.FinWait1 => ConnectionState.FinWait1,
                 TcpState.FinWait2 => ConnectionState.FinWait2,

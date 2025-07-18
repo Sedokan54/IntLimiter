@@ -2,6 +2,7 @@ using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Media;
+using System.Collections.Generic;
 
 namespace NetLimiterClone.Models
 {
@@ -11,6 +12,8 @@ namespace NetLimiterClone.Models
         private string _processName = string.Empty;
         private string _processPath = string.Empty;
         private ImageSource? _icon;
+        private bool _iconLoaded = false;
+        private bool _detailsLoaded = false;
         private long _downloadSpeed;
         private long _uploadSpeed;
         private long _totalDownload;
@@ -43,6 +46,18 @@ namespace NetLimiterClone.Models
         {
             get => _icon;
             set => SetProperty(ref _icon, value);
+        }
+
+        public bool IconLoaded
+        {
+            get => _iconLoaded;
+            set => SetProperty(ref _iconLoaded, value);
+        }
+
+        public bool DetailsLoaded
+        {
+            get => _detailsLoaded;
+            set => SetProperty(ref _detailsLoaded, value);
         }
 
         public long DownloadSpeed

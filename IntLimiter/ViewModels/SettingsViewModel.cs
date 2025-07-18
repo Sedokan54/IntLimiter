@@ -5,6 +5,8 @@ using System.Linq;
 using System.Management;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
+using System.Windows;
+using Microsoft.Win32;
 using NetLimiterClone.Models;
 using NetLimiterClone.Services;
 
@@ -13,6 +15,7 @@ namespace NetLimiterClone.ViewModels
     public class SettingsViewModel : INotifyPropertyChanged
     {
         private readonly SettingsService _settingsService;
+        private readonly SettingsExportService _exportService;
         private readonly AppSettings _originalSettings;
         private AppSettings _currentSettings;
 
@@ -89,7 +92,7 @@ namespace NetLimiterClone.ViewModels
             get => _currentSettings.ThemeMode.ToString();
             set
             {
-                if (Enum.TryParse<ThemeMode>(value, out var themeMode) && _currentSettings.ThemeMode != themeMode)
+                if (Enum.TryParse<NetLimiterClone.Models.ThemeMode>(value, out var themeMode) && _currentSettings.ThemeMode != themeMode)
                 {
                     _currentSettings.ThemeMode = themeMode;
                     OnPropertyChanged();
@@ -219,10 +222,15 @@ namespace NetLimiterClone.ViewModels
         public ICommand OkCommand { get; }
         public ICommand CancelCommand { get; }
         public ICommand ResetCommand { get; }
+        public ICommand ExportSettingsCommand { get; }
+        public ICommand ImportSettingsCommand { get; }
+        public ICommand CreateBackupCommand { get; }
+        public ICommand RestoreBackupCommand { get; }
 
         public SettingsViewModel(SettingsService settingsService)
         {
             _settingsService = settingsService;
+            _exportService = new SettingsExportService();
             _originalSettings = settingsService.CurrentSettings;
             _currentSettings = _originalSettings.Clone();
 
@@ -232,6 +240,10 @@ namespace NetLimiterClone.ViewModels
             OkCommand = new RelayCommand(Ok);
             CancelCommand = new RelayCommand(Cancel);
             ResetCommand = new RelayCommand(Reset);
+            ExportSettingsCommand = new RelayCommand(ExportSettings);
+            ImportSettingsCommand = new RelayCommand(ImportSettings);
+            CreateBackupCommand = new RelayCommand(CreateBackup);
+            RestoreBackupCommand = new RelayCommand(RestoreBackup);
         }
 
         private void LoadNetworkAdapters()
@@ -321,6 +333,118 @@ namespace NetLimiterClone.ViewModels
             OnPropertyChanged(nameof(DatabasePath));
             OnPropertyChanged(nameof(EnableDatabaseLogging));
             OnPropertyChanged(nameof(MaxLogDays));
+        }
+
+        private async void ExportSettings(object? parameter)
+        {
+            try
+            {
+                var saveFileDialog = new SaveFileDialog
+                {
+                    Filter = "JSON files (*.json)|*.json|All files (*.*)|*.*",
+                    DefaultExt = "json",
+                    AddExtension = true,
+                    FileName = $"NetLimiter_Settings_{DateTime.Now:yyyyMMdd_HHmmss}.json"
+                };
+
+                if (saveFileDialog.ShowDialog() == true)
+                {
+                    var result = await _exportService.ExportSettingsAsync(saveFileDialog.FileName);
+                    MessageBox.Show(result, "Export Settings", MessageBoxButton.OK, 
+                        result.Contains("successfully") ? MessageBoxImage.Information : MessageBoxImage.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Export failed: {ex.Message}", "Error", 
+                    MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private async void ImportSettings(object? parameter)
+        {
+            try
+            {
+                var openFileDialog = new OpenFileDialog
+                {
+                    Filter = "JSON files (*.json)|*.json|All files (*.*)|*.*",
+                    DefaultExt = "json"
+                };
+
+                if (openFileDialog.ShowDialog() == true)
+                {
+                    // First validate the file
+                    var validateResult = await _exportService.ImportSettingsAsync(openFileDialog.FileName, validateOnly: true);
+                    if (!validateResult.Contains("successful"))
+                    {
+                        MessageBox.Show(validateResult, "Import Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        return;
+                    }
+
+                    // Ask for confirmation
+                    var confirmResult = MessageBox.Show(
+                        "This will replace all current settings, profiles, and rules. Are you sure you want to continue?",
+                        "Import Settings",
+                        MessageBoxButton.YesNo,
+                        MessageBoxImage.Question);
+
+                    if (confirmResult == MessageBoxResult.Yes)
+                    {
+                        var result = await _exportService.ImportSettingsAsync(openFileDialog.FileName);
+                        MessageBox.Show(result, "Import Settings", MessageBoxButton.OK, 
+                            result.Contains("successfully") ? MessageBoxImage.Information : MessageBoxImage.Error);
+                        
+                        if (result.Contains("successfully"))
+                        {
+                            // Refresh the current settings
+                            _currentSettings = _settingsService.CurrentSettings.Clone();
+                            UpdateFromSettings(_currentSettings);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Import failed: {ex.Message}", "Error", 
+                    MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private async void CreateBackup(object? parameter)
+        {
+            try
+            {
+                var result = await _exportService.CreateBackupAsync();
+                MessageBox.Show(result, "Create Backup", MessageBoxButton.OK, 
+                    result.Contains("successfully") ? MessageBoxImage.Information : MessageBoxImage.Error);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Backup creation failed: {ex.Message}", "Error", 
+                    MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private async void RestoreBackup(object? parameter)
+        {
+            try
+            {
+                var backups = _exportService.GetAvailableBackups();
+                if (backups.Count == 0)
+                {
+                    MessageBox.Show("No backup files found.", "Restore Backup", 
+                        MessageBoxButton.OK, MessageBoxImage.Information);
+                    return;
+                }
+
+                // TODO: Implement backup selection dialog
+                MessageBox.Show("Backup restore functionality not yet implemented.", "Not Implemented", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Restore failed: {ex.Message}", "Error", 
+                    MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;

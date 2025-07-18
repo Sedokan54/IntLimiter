@@ -17,6 +17,7 @@ namespace NetLimiterClone.Services
 
         public event EventHandler<ProfileChangedEventArgs>? ProfileChanged;
         public event EventHandler<ProfilesUpdatedEventArgs>? ProfilesUpdated;
+        public event EventHandler? ProfilesChanged;
 
         public ProfileService(BandwidthLimiterService bandwidthLimiterService)
         {
